@@ -12,9 +12,10 @@
         {
             Console.WriteLine("Bienvenido al Juego Adivine el Numero!");
             Console.WriteLine();
-
             Juego juego = new Juego();
-            Jugada jugada = PreguntarMaximo();
+
+            var jugada = PreguntarMaximo();
+            
             int numero = PreguntarNumero();
             bool continuar = false;
 
@@ -35,16 +36,53 @@
         {
             Console.Write("Ingrese el Numero Maximo para comenzar: ");
             int maximo = Convert.ToInt32(Console.ReadLine());
+            while (maximo <= 0)
+            {
+                Console.Write("Ingrese el Numero Maximo para comenzar: (Mayor a 0) ");
+                maximo = Convert.ToInt32(Console.ReadLine());
+            }
 
-            Jugada jugada = new(maximo);
-            return jugada;
+            ConsoleKeyInfo opcion;
+            do
+            {
+                Console.Write("Desea jugar con Ayuda? [s/n] ");
+                opcion = Console.ReadKey();
+                Console.WriteLine();
+            } while (opcion.Key != ConsoleKey.N && opcion.Key != ConsoleKey.S);
+            if (opcion.Key == ConsoleKey.S)
+            {
+                JugadaConAyuda jugada = new JugadaConAyuda(maximo);
+                return jugada;
+            }
+            else
+            {
+                Jugada jugada = new Jugada(maximo);
+                return jugada;
+            }
         }
 
         private int PreguntarNumero()
         {
             Console.WriteLine();
-            Console.Write("Intente adivinar el Numero: ");
-            return Convert.ToInt32(Console.ReadLine());
+
+            int numero = 0;
+            bool error = false;
+            do
+            {
+                try
+                {
+                    Console.Write("Intente adivinar el Numero: ");
+                    numero = Convert.ToInt32(Console.ReadLine());
+                    error = false;
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine($"Error: {e.Message}");
+                    error = true;
+                }
+            } while (error == true);
+
+            return numero;
         }
 
         private bool Continuar()
