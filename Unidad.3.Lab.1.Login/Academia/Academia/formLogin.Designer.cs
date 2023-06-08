@@ -103,6 +103,7 @@
             // 
             // formLogin
             // 
+            AcceptButton = btnIngresar;
             AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(910, 442);
@@ -113,8 +114,12 @@
             Controls.Add(label3);
             Controls.Add(label2);
             Controls.Add(label1);
+            FormBorderStyle = FormBorderStyle.FixedSingle;
             Margin = new Padding(4, 5, 4, 5);
+            MaximizeBox = false;
+            MinimizeBox = false;
             Name = "formLogin";
+            StartPosition = FormStartPosition.CenterParent;
             Text = "Ingreso";
             ResumeLayout(false);
             PerformLayout();
