@@ -28,7 +28,12 @@
         /// </summary>
         private void InitializeComponent()
         {
+            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
             dgvUsuarios = new DataGridView();
+            apellido = new DataGridViewTextBoxColumn();
+            nombre = new DataGridViewTextBoxColumn();
+            fecha_nac = new DataGridViewTextBoxColumn();
+            direccion = new DataGridViewTextBoxColumn();
             label1 = new Label();
             btnGuardar = new Button();
             ((System.ComponentModel.ISupportInitialize)dgvUsuarios).BeginInit();
@@ -36,14 +41,50 @@
             // 
             // dgvUsuarios
             // 
+            dataGridViewCellStyle1.BackColor = Color.MediumTurquoise;
+            dgvUsuarios.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
             dgvUsuarios.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             dgvUsuarios.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dgvUsuarios.Columns.AddRange(new DataGridViewColumn[] { apellido, nombre, fecha_nac, direccion });
+            dgvUsuarios.EditMode = DataGridViewEditMode.EditOnEnter;
             dgvUsuarios.Location = new Point(12, 37);
             dgvUsuarios.Name = "dgvUsuarios";
             dgvUsuarios.RowHeadersWidth = 62;
             dgvUsuarios.RowTemplate.Height = 33;
             dgvUsuarios.Size = new Size(776, 361);
             dgvUsuarios.TabIndex = 0;
+            // 
+            // apellido
+            // 
+            apellido.DataPropertyName = "apellido";
+            apellido.HeaderText = "Apellido";
+            apellido.MinimumWidth = 8;
+            apellido.Name = "apellido";
+            apellido.Width = 150;
+            // 
+            // nombre
+            // 
+            nombre.DataPropertyName = "nombre";
+            nombre.HeaderText = "Nombre";
+            nombre.MinimumWidth = 8;
+            nombre.Name = "nombre";
+            nombre.Width = 150;
+            // 
+            // fecha_nac
+            // 
+            fecha_nac.DataPropertyName = "fecha_nac";
+            fecha_nac.HeaderText = "Fecha de nacimiento";
+            fecha_nac.MinimumWidth = 8;
+            fecha_nac.Name = "fecha_nac";
+            fecha_nac.Width = 220;
+            // 
+            // direccion
+            // 
+            direccion.DataPropertyName = "direccion";
+            direccion.HeaderText = "Direccion";
+            direccion.MinimumWidth = 8;
+            direccion.Name = "direccion";
+            direccion.Width = 150;
             // 
             // label1
             // 
@@ -85,5 +126,9 @@
         private DataGridView dgvUsuarios;
         private Label label1;
         private Button btnGuardar;
+        private DataGridViewTextBoxColumn apellido;
+        private DataGridViewTextBoxColumn nombre;
+        private DataGridViewTextBoxColumn fecha_nac;
+        private DataGridViewTextBoxColumn direccion;
     }
 }
