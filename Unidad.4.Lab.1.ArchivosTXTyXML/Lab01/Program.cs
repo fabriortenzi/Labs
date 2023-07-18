@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using Lab01;
+using System.IO;
 
 FileStream lector1 = new FileStream("agenda.txt", FileMode.Open, FileAccess.Read, FileShare.Read);
 while (lector1.Length > lector1.Position)
@@ -42,16 +43,12 @@ static void escribir()
     {
         Console.Write("Ingrese nombre: ");
         string? nombre = Console.ReadLine();
-        Console.WriteLine();
         Console.Write("Ingrese apellido: ");
         string? apellido = Console.ReadLine();
-        Console.WriteLine();
         Console.Write("Ingrese e-mail: ");
         string? email = Console.ReadLine();
-        Console.WriteLine();
         Console.Write("Ingrese telefono: ");
         string? telefono = Console.ReadLine();
-        Console.WriteLine();
         Console.WriteLine();
 
         escritor.WriteLine(nombre + ";" + apellido + ";" + email + ";" + telefono);
@@ -60,3 +57,15 @@ static void escribir()
     }
     escritor.Close();
 }
+
+
+// Ejercicio XML (los metodos estan en xml.cs)
+
+Console.WriteLine("\nPresione una tecla para generar el archivo agendaxml.xml con los datos de agenda.txt");
+Console.ReadKey();
+xml.escribirXML();
+Console.WriteLine("Archivo agendaxml.xml generado correctamente\n\nPresione una tecla para ver su contenido");
+Console.ReadKey();
+Console.WriteLine();
+xml.leerXML();
+Console.ReadKey();
