@@ -104,7 +104,6 @@ namespace Ejercicio1
                          $"{rowAl.GetParentRow(relAlumno_ac)[dtcolNombre].ToString()}");
                 }
             }
-
         }
     }
 }
