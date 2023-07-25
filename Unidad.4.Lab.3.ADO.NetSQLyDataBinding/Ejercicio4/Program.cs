@@ -17,25 +17,15 @@ namespace Ejercicio4
             dtEmpresas.Columns.Add("id", typeof(string));
             dtEmpresas.Columns.Add("company_name", typeof(string));
 
-            SqlConnection myconn = new SqlConnection();
+            SqlConnection myConn = new SqlConnection();
 
-            myconn.ConnectionString = @"Data Source=LOCALHOST\SQLEXPRESS;Initial Catalog=unidad4_lab3;Integrated Security=True;";
+            myConn.ConnectionString = @"Data Source=LOCALHOST\SQLEXPRESS;Initial Catalog=unidad4_lab3;Integrated Security=True;";
 
-            SqlCommand mycommand = new SqlCommand();
+            SqlDataAdapter myAdap = new SqlDataAdapter("SELECT id, company_name FROM customers", myConn);
 
-            mycommand.CommandText = "SELECT id, company_name FROM customers";
-
-            mycommand.Connection = myconn;
-
-            SqlDataAdapter myadap = new SqlDataAdapter("SELECT id, company_name FROM customers", myconn);
-
-            myconn.Open();
-
-            SqlDataReader mydr = mycommand.ExecuteReader();
-
-            dtEmpresas.Load(mydr);
-
-            myconn.Close();
+            myConn.Open();
+            myAdap.Fill(dtEmpresas);
+            myConn.Close();
 
             Console.WriteLine("Listado de Empresas");
 
@@ -47,6 +37,36 @@ namespace Ejercicio4
             }
 
 
+            // Update
+            Console.Write("\nEscriba el id del cliente que desea modificar: ");
+            string custId = Console.ReadLine();
+
+            DataRow[] rwEmpresas = dtEmpresas.Select($"id = '{custId}'");
+            if (rwEmpresas.Length != 1)
+            {
+                Console.WriteLine("Cliente no encontrado");
+                return;
+            }
+
+            DataRow rowMiEmpresa = rwEmpresas[0];
+            string nombreActual = rowMiEmpresa["company_name"].ToString();
+            Console.WriteLine($"Nombre actual de la empresa: {nombreActual}");
+            Console.Write("Escriba el nuevo nombre: ");
+            string nuevoNombre = Console.ReadLine();
+
+            rowMiEmpresa.BeginEdit();
+            rowMiEmpresa["company_name"] = nuevoNombre;
+            rowMiEmpresa.EndEdit();
+
+            SqlCommand updCommand = new SqlCommand();
+            updCommand.Connection = myConn;
+            updCommand.CommandText = "UPDATE customers SET company_name = @company_name WHERE id = @id";
+
+            updCommand.Parameters.Add("@company_name", SqlDbType.VarChar, 20, "company_name");
+            updCommand.Parameters.Add("@id", SqlDbType.Int, 8,"id");
+
+            myAdap.UpdateCommand = updCommand;
+            myAdap.Update(dtEmpresas);
         }
     }
 }
