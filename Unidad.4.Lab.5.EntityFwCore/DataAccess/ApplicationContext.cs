@@ -9,6 +9,13 @@ namespace DataAccess
     // como parametro y lo envié al constructor de la clase padre DbContext
     public class ApplicationContext : DbContext
     {
-        
+        public DbSet<Materia> Materias { get; set; }
+
+        public DbSet<Plan> Planes { get; set; }
+
+        public DbSet<Especialidad> Especialidades { get; set; }
+
+        public ApplicationContext(DbContextOptions<ApplicationContext> contextOptions)
+            : base(contextOptions) { }
     }
 }

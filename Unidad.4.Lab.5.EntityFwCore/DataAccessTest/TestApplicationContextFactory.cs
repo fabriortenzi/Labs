@@ -8,7 +8,7 @@ namespace DataAccessTest
         public ApplicationContext CreateContext()
         {
             var optionsBuilder = new DbContextOptionsBuilder<ApplicationContext>();
-            optionsBuilder.UseSqlite("Data Source=./academia.db");
+            optionsBuilder.UseSqlite("Data Source=./academia.db");            
 
             return new ApplicationContext(optionsBuilder.Options);
         }
