@@ -20,12 +20,23 @@ namespace Web.Providers
     {
         public async Task SignIn(HttpContext httpContext, UsuarioLogeado usuarioLogeado, bool isPersistent = false)
         {
-            throw new NotImplementedException();
+            var claims = new List<Claim> 
+            {
+                new Claim(ClaimTypes.NameIdentifier, usuarioLogeado.Id.ToString()),
+                new Claim(ClaimTypes.Name, usuarioLogeado.Nombre),
+                new Claim(ClaimTypes.Email, usuarioLogeado.Mail),
+                new Claim(ClaimTypes.Role, usuarioLogeado.Role.ToString())              
+            };
+
+            string authScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+            var claimPrincipal = new ClaimsPrincipal(new ClaimsIdentity(claims, authScheme));
+
+            await httpContext.SignInAsync(authScheme, claimPrincipal, new AuthenticationProperties() { IsPersistent = isPersistent });
         }
 
         public async Task SignOut(HttpContext httpContext)
-        {
-            throw new NotImplementedException();
+        {            
+            await httpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
         }
     }
 }

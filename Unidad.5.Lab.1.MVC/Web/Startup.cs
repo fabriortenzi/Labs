@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -11,6 +12,7 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Unidad._5.Lab._1.MVC.Models;
 using Web.Models;
 using Web.Providers;
 
@@ -28,7 +30,20 @@ namespace Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllersWithViews();
+            services.AddControllersWithViews().AddFluentValidation(fv => {
+                fv.RegisterValidatorsFromAssemblyContaining<MateriaValidator>();
+                fv.ValidatorOptions.LanguageManager.Culture = new CultureInfo("es");
+            });
+            services.AddSingleton<IMateriaRepository, MateriaRepository>();
+            services.AddSingleton<IPlanRepository, PlanRepository>();
+            services.AddScoped<IHasher, Hasher>();
+            services.AddSingleton<IUsuarioRepository, UsuarioRepository>();
+            services.AddScoped<IUsuarioManager, UsuarioManager>();
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(options => {
+                options.LoginPath = "/Account/Login";
+                options.LogoutPath = "/Account/Logout";
+                options.AccessDeniedPath = "/Error/401";
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -45,14 +60,13 @@ namespace Web
                 app.UseHsts();
             }
 
-            // Aca middleware para paginas de error
+            app.UseStatusCodePagesWithReExecute("/Error/{0}");
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
             app.UseRouting();
-
-            
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

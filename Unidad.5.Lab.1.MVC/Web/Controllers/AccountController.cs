@@ -1,5 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.DataProtection.KeyManagement;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,7 +31,17 @@ namespace Unidad._5.Lab._1.MVC.Controllers
         {
             if (!ModelState.IsValid) return View(loginVM);
 
-            throw new NotImplementedException();
+            var loggedUser = _usuarioRepository.Validar(loginVM);
+
+            if (loggedUser == null)
+            {
+                ModelState.AddModelError("", "Mail o contraseña incorrectos");
+                return View(loginVM);
+            }
+
+            await _usuarioManager.SignIn(this.HttpContext, loggedUser, loginVM.IsPersistent);
+
+            return RedirectToAction("Index", "Materia");
         }
 
         [HttpGet]
@@ -39,13 +52,24 @@ namespace Unidad._5.Lab._1.MVC.Controllers
         {
             if (!ModelState.IsValid) return View(registerVM);
 
-            throw new NotImplementedException();
+            var loggedUser = _usuarioRepository.Register(registerVM);
+
+            if (loggedUser == null)
+            {
+                ModelState.AddModelError("", "El usuario ya existe");
+                return View(registerVM);
+            }
+
+            await _usuarioManager.SignIn(this.HttpContext, loggedUser, registerVM.IsPersistent);
+
+            return RedirectToAction("Index", "Materia");
         }
 
         [Authorize]
         public async Task<IActionResult> Logout()
         {
-            throw new NotImplementedException();
+            await _usuarioManager.SignOut(this.HttpContext);
+            return RedirectToActionPermanent("Index", "Home");
         }
     }
 }
