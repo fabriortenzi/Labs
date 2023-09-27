@@ -18,6 +18,9 @@ namespace Web.Controllers
             _logger = logger;
         }
 
-        public IActionResult Index() => throw new NotImplementedException();
+        public IActionResult Index()
+        {
+            return RedirectToAction("List", "Materia");
+        }
     }
 }
